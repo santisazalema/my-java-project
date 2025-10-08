@@ -1,0 +1,18 @@
+# Compiled class files
+*.class
+*.jar
+*.war
+
+# Log files and OS files
+*.log
+.DS_Store
+
+# IDE directories and settings (e.g., IntelliJ, VS Code)
+.idea/
+.vscode/
+*.iml
+
+# Build directories (Maven, Gradle, etc.)
+target/
+build/
+bin/
