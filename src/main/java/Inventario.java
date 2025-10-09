@@ -2,21 +2,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventario {
-    
-    // Usa un ArrayList para almacenar los productos.
     private List<Producto> listaProductos;
 
     public Inventario() {
         this.listaProductos = new ArrayList<>();
     }
 
-    // Operación: CREATE (Crear/Agregar)
+    // CREATE
     public void agregarProducto(Producto producto) {
+        if (buscarProducto(producto.getId()) != null) {
+            System.out.println("❌ Error: Ya existe un producto con ID " + producto.getId());
+            return;
+        }
         listaProductos.add(producto);
         System.out.println("✅ Producto agregado: " + producto.getNombre());
     }
 
-    // Operación: READ (Leer/Listar todos)
+    // READ
     public void listarProductos() {
         if (listaProductos.isEmpty()) {
             System.out.println("El inventario está vacío.");
@@ -29,30 +31,44 @@ public class Inventario {
         System.out.println("-------------------------");
     }
 
-    // Operación: READ (Leer/Buscar por ID)
     public Producto buscarProducto(int id) {
         for (Producto p : listaProductos) {
-            if (p.getId() == id) {
-                return p;
-            }
+            if (p.getId() == id) return p;
         }
-        return null; // Retorna null si no lo encuentra
+        return null;
     }
 
-    // Operación: UPDATE (Actualizar Cantidad)
+    // UPDATE
     public void actualizarCantidad(int id, int nuevaCantidad) {
+        if (nuevaCantidad < 0) {
+            System.out.println("❌ Error: La cantidad no puede ser negativa.");
+            return;
+        }
         Producto p = buscarProducto(id);
         if (p != null) {
             p.setCantidad(nuevaCantidad);
             System.out.println("✅ Cantidad de " + p.getNombre() + " actualizada a " + nuevaCantidad);
         } else {
-            System.out.println("❌ Error: Producto con ID " + id + " no encontrado.");
+            System.out.println("❌ Producto con ID " + id + " no encontrado.");
         }
     }
-    
-    // Operación: DELETE (Eliminar)
+
+    public void actualizarPrecio(int id, double nuevoPrecio) {
+        if (nuevoPrecio < 0) {
+            System.out.println("❌ Error: El precio no puede ser negativo.");
+            return;
+        }
+        Producto p = buscarProducto(id);
+        if (p != null) {
+            p.setPrecio(nuevoPrecio);
+            System.out.println("✅ Precio de " + p.getNombre() + " actualizado a $" + String.format("%.2f", nuevoPrecio));
+        } else {
+            System.out.println("❌ Producto con ID " + id + " no encontrado.");
+        }
+    }
+
+    // DELETE
     public void eliminarProducto(int id) {
-        // Buscar el producto para eliminarlo
         for (int i = 0; i < listaProductos.size(); i++) {
             if (listaProductos.get(i).getId() == id) {
                 String nombre = listaProductos.get(i).getNombre();
@@ -61,6 +77,7 @@ public class Inventario {
                 return;
             }
         }
-        System.out.println("❌ Error: No se puede eliminar. Producto con ID " + id + " no encontrado.");
+        System.out.println("❌ Producto con ID " + id + " no encontrado.");
     }
 }
+
